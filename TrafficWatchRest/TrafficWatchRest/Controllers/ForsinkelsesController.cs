@@ -14,7 +14,7 @@ namespace TrafficWatchRest.Controllers
     {
         // GET: api/Forsinkelses
         [HttpGet]
-        public IEnumerable<string> Get()
+        public List<string> Get()
         {
             return new string[] { "value1", "value2" };
         }
