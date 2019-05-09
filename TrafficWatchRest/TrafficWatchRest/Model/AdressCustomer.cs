@@ -7,5 +7,7 @@ namespace TrafficWatchRest.Model
 {
     public class AdressCustomer
     {
+        public int AdressId { get; set; }
+        public int CustomerId { get; set; }
     }
 }
