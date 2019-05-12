@@ -9,6 +9,5 @@ namespace TrafficWatchRest.Model
     {
         public int CustomerID { get; set; }
         public int AlarmID { get; set; }
-        public Customer Co { get; set; }
     }
 }
