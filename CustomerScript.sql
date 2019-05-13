@@ -1,6 +1,6 @@
 CREATE TABLE Customer ( id INT NOT NULL IDENTITY(1,1), email NVARCHAR NOT NULL, 
 firstName NVARCHAR NOT NULL, lastName NVARCHAR NOT NULL, address_id INT, 
-alarm_id INT, route_id INT, adminstartor INT NOT NULL, PRIMARY KEY (id))
+alarm_id INT, route_id INT, adminstartor BIT NOT NULL, PRIMARY KEY (id))
 
 CREATE TABLE Address (id INT NOT NULL IDENTITY(1,1), 
 zip_code int, city NVARCHAR, road NVARCHAR, house_nr INT, 
