@@ -14,20 +14,18 @@ namespace TrafficWatchRest.Controllers
     [ApiController]
     public class CustomerController : ControllerBase
     {
-        private static readonly string ConnectionString = services.AddDbContext<BloggingContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("BloggingDatabase")));
-        private static List<Customer> customerList = new List<Customer>
-        {
-            new Customer(){Id = 1, Firstname = "Marcel", Lastname = "Kristensen", Email = "mar@mar.dk", AdresseID = 33, AlarmID = 8000, RouteID = 7, Admin = false},
-            new Customer(),
-            new Customer()
-        };
+        private static readonly string ConnectionString = Controllers.ConnectionString.GetConnectionString();
+        //{
+        //    new Customer(){Id = 1, Firstname = "Marcel", Lastname = "Kristensen", Email = "mar@mar.dk", AdresseID = 33, AlarmID = 8000, RouteID = 7, Admin = false},
+        //    new Customer(),
+        //    new Customer()
+        //};
 
         //GET: api/Customer
-       [HttpGet]
-        public List<Customer> Get()
+        [HttpGet]
+        public IEnumerable<Customer> Get()
         {
-            const string selectString = "select * from book order by id";
+            const string selectString = "select * from customer order by id";
             using (SqlConnection databaseConnection = new SqlConnection(ConnectionString))
             {
                 databaseConnection.Open();
@@ -50,10 +48,10 @@ namespace TrafficWatchRest.Controllers
         private static Customer ReadCustomer(IDataRecord reader)
         {
             int id = reader.GetInt32(0);
-            string email = reader.IsDBNull(1) ? null : reader.GetString(1);
-            string firstname = reader.IsDBNull(2) ? null : reader.GetString(2);
-            string lastname = reader.IsDBNull(3) ? null : reader.GetString(3);
-            int addresseid = reader.GetInt32(4);
+            string email = reader.GetString(1);
+            string firstname = reader.GetString(2);
+            string lastname = reader.GetString(3);
+            int addressid = reader.GetInt32(4);
             int alarmid = reader.GetInt32(5);
             int routeid = reader.GetInt32(6);
             bool admin = reader.GetBoolean(7);
@@ -61,22 +59,22 @@ namespace TrafficWatchRest.Controllers
             {
                 Id = id,
                 Email = email,
-                Firstname = firstname,
-                Lastname = lastname,
-                AdresseID = addresseid,
-                AlarmID = alarmid,
-                RouteID = routeid,
-                Admin = admin
+                FirstName = firstname,
+                LastName = lastname,
+                AddressId = addressid,
+                AlarmId = alarmid,
+                RouteId = routeid,
+                Adminstartor = admin
             };
             return customer;
         }
 
         // GET: api/Customer/5
-        [HttpGet("{id}", Name = "Get")]
-        public Customer Get(int id)
-        {
-            //return customerList.FirstOrDefault(x => x.Id == id);
-        }
+        //[HttpGet("{id}", Name = "Get")]
+        //public Customer Get(int id)
+        //{
+        //    return 
+        //}
 
         // POST: api/Customer
         [HttpPost]

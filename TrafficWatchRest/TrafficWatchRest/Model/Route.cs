@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace TrafficWatchRest.Model
 {
-    public class Route : Customer
+    public partial class Route
     {
         public int Id { get; set; }
-        public int addressIdDepature { get; set; }
-        public int addressIdArrival { get; set; }
+        public int? AddressIdDeparture { get; set; }
+        public int? AddressIdArrival { get; set; }
+
+        public virtual Address AddressIdArrivalNavigation { get; set; }
+        public virtual Address AddressIdDepartureNavigation { get; set; }
     }
 }

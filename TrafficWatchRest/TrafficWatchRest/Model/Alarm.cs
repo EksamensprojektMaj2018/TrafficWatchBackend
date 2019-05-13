@@ -1,11 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TrafficWatchRest.Model
 {
-    public class Alarm: CustomerAlarm
+    public partial class Alarm
     {
+        public Alarm()
+        {
+            CustomerAlarm = new HashSet<CustomerAlarm>();
+        }
+
         public int Id { get; set; }
-        public DateTime WakeUP { get; set; }
-        public int Delay { get; set; }
+        public DateTime WakeUp { get; set; }
+        public int? Delay { get; set; }
+
+        public virtual ICollection<CustomerAlarm> CustomerAlarm { get; set; }
     }
 }
