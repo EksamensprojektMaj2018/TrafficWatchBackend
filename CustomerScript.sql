@@ -12,7 +12,7 @@ CREATE TABLE Route ( id INT NOT NULL IDENTITY(1,1), address_id_departure INT, ad
 CONSTRAINT FK_Departure FOREIGN KEY (address_id_departure) REFERENCES Address(id),
 CONSTRAINT FK_Arrival FOREIGN KEY (address_id_arrival) REFERENCES Address(id))
 
-CREATE TABLE CustomerAlarm (customer_id INT, alarm_id INT, PRIMARY KEY(customer_id, alarm_id)
+CREATE TABLE CustomerAlarm (customer_id INT, alarm_id INT, PRIMARY KEY(customer_id, alarm_id),
 CONSTRAINT FK_CustomerAlarm FOREIGN KEY (alarm_id) REFERENCES Alarm(id), CONSTRAINT FK_AlarmCustomer FOREIGN KEY (customer_id) REFERENCES Customer(id))
 
 CREATE TABLE AddressCustomer(address_id INT, customer_id INT, PRIMARY KEY(address_id, customer_id), 
