@@ -56,7 +56,7 @@ namespace TrafficWatchRest.Controllers
         }
 
         // GET: api/Route/5
-        [HttpGet("{id}", Name = "Get")]
+        [Route("{id}")]
         public Route GetRouteById(int id)
         {
             const string selectString = "select * from route where id=@id";

@@ -54,7 +54,7 @@ namespace TrafficWatchRest.Controllers
         }
 
         // GET: api/Alarm/5
-        [HttpGet("{id}", Name = "Get")]
+        [Route("{id}")]
         public Alarm GetAlarmById(int id)
         {
             const string selectString = "select * from alarm where id=@id";
