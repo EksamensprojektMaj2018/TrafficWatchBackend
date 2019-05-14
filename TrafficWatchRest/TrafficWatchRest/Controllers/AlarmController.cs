@@ -12,39 +12,28 @@ namespace TrafficWatchRest.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CustomerController : ControllerBase
+    public class AlarmController : ControllerBase
     {
         private static readonly string ConnectionString = Controllers.ConnectionString.GetConnectionString();
 
-        private static Customer ReadCustomer(IDataRecord reader)
+        private static Alarm ReadAlarm(IDataRecord reader)
         {
             int id = reader.GetInt32(0);
-            string email = reader.GetString(1);
-            string firstname = reader.GetString(2);
-            string lastname = reader.GetString(3);
-            int addressid = reader.GetInt32(4);
-            int alarmid = reader.GetInt32(5);
-            int routeid = reader.GetInt32(6);
-            bool admin = reader.GetBoolean(7);
-            Customer customer = new Customer
+            DateTime wakeup = reader.GetDateTime(1);
+            int delay = reader.GetInt32(2);
+            Alarm alarm = new Alarm
             {
                 Id = id,
-                Email = email,
-                FirstName = firstname,
-                LastName = lastname,
-                AddressId = addressid,
-                AlarmId = alarmid,
-                RouteId = routeid,
-                Adminstartor = admin
+                WakeUp = wakeup,
+                Delay = delay,
             };
-            return customer;
+            return alarm;
         }
-
-        //GET: api/Customer
+        // GET: api/Alarm
         [HttpGet]
-        public IEnumerable<Customer> GetAllCustomers()
+        public IEnumerable<Alarm> GetAllAlarms()
         {
-            const string selectString = "select * from customer order by id";
+            const string selectString = "select * from alarm order by id";
             using (SqlConnection databaseConnection = new SqlConnection(ConnectionString))
             {
                 databaseConnection.Open();
@@ -52,23 +41,23 @@ namespace TrafficWatchRest.Controllers
                 {
                     using (SqlDataReader reader = selectCommand.ExecuteReader())
                     {
-                        List<Customer> customerList = new List<Customer>();
+                        List<Alarm> alarmList = new List<Alarm>();
                         while (reader.Read())
                         {
-                            Customer customer = ReadCustomer(reader);
-                            customerList.Add(customer);
+                            Alarm alarm = ReadAlarm(reader);
+                            alarmList.Add(alarm);
                         }
-                        return customerList;
+                        return alarmList;
                     }
                 }
             }
         }
 
-        // GET: api/Customer/5
+        // GET: api/Alarm/5
         [HttpGet("{id}", Name = "Get")]
-        public Customer GetCustomerById(int id)
+        public Alarm GetAlarmById(int id)
         {
-            const string selectString = "select * from customer where id=@id";
+            const string selectString = "select * from alarm where id=@id";
             using (SqlConnection databaseConnection = new SqlConnection(ConnectionString))
             {
                 databaseConnection.Open();
@@ -79,64 +68,53 @@ namespace TrafficWatchRest.Controllers
                     {
                         if (!reader.HasRows) { return null; }
                         reader.Read(); // advance cursor to first row
-                        return ReadCustomer(reader);
+                        return ReadAlarm(reader);
                     }
                 }
             }
         }
 
-        // POST: api/Customer
+        // POST: api/Alarm
         [HttpPost]
-        public int AddCustomer([FromBody] Customer value)
+        public int AddAlarm([FromBody] Alarm value)
         {
-            const string insertString = "insert into customer (email, firstname, lastname, addressid, alarmid, routeid, admin) values (@email, @firstname, @lastname, @addressid, @alarmid, @routeid, @admin)";
+            const string insertString = "insert into alarm (wakeup, delay) values (@wakeup, @delay)";
             using (SqlConnection databaseConnection = new SqlConnection(ConnectionString))
             {
                 databaseConnection.Open();
                 using (SqlCommand insertCommand = new SqlCommand(insertString, databaseConnection))
                 {
-                    insertCommand.Parameters.AddWithValue("@email", value.Email);
-                    insertCommand.Parameters.AddWithValue("@firstname", value.FirstName);
-                    insertCommand.Parameters.AddWithValue("@lastname", value.LastName);
-                    insertCommand.Parameters.AddWithValue("@addressid", value.AddressId);
-                    insertCommand.Parameters.AddWithValue("@alarmid", value.AlarmId);
-                    insertCommand.Parameters.AddWithValue("@routeid", value.RouteId);
-                    insertCommand.Parameters.AddWithValue("@admin", value.Adminstartor);
+                    insertCommand.Parameters.AddWithValue("@wakeup", value.WakeUp);
+                    insertCommand.Parameters.AddWithValue("@delay", value.Delay);
                     int rowsAffected = insertCommand.ExecuteNonQuery();
                     return rowsAffected;
                 }
             }
         }
 
-        // PUT: api/Customer/5
+        // POST: api/Alarm
         [HttpPut("{id}")]
-        public int UpdateCustomer(int id, [FromBody] Customer value)
+        public int UpdateAlarm(int id, [FromBody] Alarm value)
         {
             const string updateString =
-                "update customer set email=@email, firstname=@firstname, lastname=@lastname, addressid=@addressid, alarmid=@alarmid routeid=@routeid, admin=@admin where id=@id;";
+                "update alarm set wakeup=@wakeup, delay=@delay;";
             using (SqlConnection databaseConnection = new SqlConnection(ConnectionString))
             {
                 databaseConnection.Open();
                 using (SqlCommand updateCommand = new SqlCommand(updateString, databaseConnection))
                 {
-                    updateCommand.Parameters.AddWithValue("@email", value.Email);
-                    updateCommand.Parameters.AddWithValue("@firstname", value.FirstName);
-                    updateCommand.Parameters.AddWithValue("@lastname", value.LastName);
-                    updateCommand.Parameters.AddWithValue("@addressid", value.AddressId);
-                    updateCommand.Parameters.AddWithValue("@alarmid", value.AlarmId);
-                    updateCommand.Parameters.AddWithValue("@routeid", value.RouteId);
-                    updateCommand.Parameters.AddWithValue("@admin", value.Adminstartor);
+                    updateCommand.Parameters.AddWithValue("@wakeup", value.WakeUp);
+                    updateCommand.Parameters.AddWithValue("@delay", value.Delay);
                     int rowsAffected = updateCommand.ExecuteNonQuery();
                     return rowsAffected;
                 }
             }
         }
-
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public int DeleteCustomer(int id)
+        public int DeleteAlarm(int id)
         {
-            const string deleteStatement = "delete from customer where id=@id";
+            const string deleteStatement = "delete from alarm where id=@id";
             using (SqlConnection databaseConnection = new SqlConnection(ConnectionString))
             {
                 databaseConnection.Open();

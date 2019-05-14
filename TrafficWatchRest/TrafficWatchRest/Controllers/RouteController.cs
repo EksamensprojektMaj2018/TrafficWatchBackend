@@ -12,39 +12,29 @@ namespace TrafficWatchRest.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CustomerController : ControllerBase
+    public class RouteController : ControllerBase
     {
         private static readonly string ConnectionString = Controllers.ConnectionString.GetConnectionString();
 
-        private static Customer ReadCustomer(IDataRecord reader)
+        private static Route ReadRoute(IDataRecord reader)
         {
             int id = reader.GetInt32(0);
-            string email = reader.GetString(1);
-            string firstname = reader.GetString(2);
-            string lastname = reader.GetString(3);
-            int addressid = reader.GetInt32(4);
-            int alarmid = reader.GetInt32(5);
-            int routeid = reader.GetInt32(6);
-            bool admin = reader.GetBoolean(7);
-            Customer customer = new Customer
+            int addressiddeparture = reader.GetInt32(1);
+            int addressidarrival = reader.GetInt32(2);
+            Route route = new Route()
             {
                 Id = id,
-                Email = email,
-                FirstName = firstname,
-                LastName = lastname,
-                AddressId = addressid,
-                AlarmId = alarmid,
-                RouteId = routeid,
-                Adminstartor = admin
+                AddressIdDeparture = addressiddeparture,
+                AddressIdArrival = addressidarrival
             };
-            return customer;
+            return route;
         }
 
-        //GET: api/Customer
+        // GET: api/Route
         [HttpGet]
-        public IEnumerable<Customer> GetAllCustomers()
+        public IEnumerable<Route> GetAllRoutes()
         {
-            const string selectString = "select * from customer order by id";
+            const string selectString = "select * from route order by id";
             using (SqlConnection databaseConnection = new SqlConnection(ConnectionString))
             {
                 databaseConnection.Open();
@@ -52,23 +42,24 @@ namespace TrafficWatchRest.Controllers
                 {
                     using (SqlDataReader reader = selectCommand.ExecuteReader())
                     {
-                        List<Customer> customerList = new List<Customer>();
+                        List<Route> routeList = new List<Route>();
                         while (reader.Read())
                         {
-                            Customer customer = ReadCustomer(reader);
-                            customerList.Add(customer);
+                            Route route = ReadRoute(reader);
+                            routeList.Add(route);
                         }
-                        return customerList;
+
+                        return routeList;
                     }
                 }
             }
         }
 
-        // GET: api/Customer/5
+        // GET: api/Route/5
         [HttpGet("{id}", Name = "Get")]
-        public Customer GetCustomerById(int id)
+        public Route GetRouteById(int id)
         {
-            const string selectString = "select * from customer where id=@id";
+            const string selectString = "select * from route where id=@id";
             using (SqlConnection databaseConnection = new SqlConnection(ConnectionString))
             {
                 databaseConnection.Open();
@@ -79,53 +70,43 @@ namespace TrafficWatchRest.Controllers
                     {
                         if (!reader.HasRows) { return null; }
                         reader.Read(); // advance cursor to first row
-                        return ReadCustomer(reader);
+                        return ReadRoute(reader);
                     }
                 }
             }
         }
 
-        // POST: api/Customer
+        // POST: api/Route
         [HttpPost]
-        public int AddCustomer([FromBody] Customer value)
+        public int AddRoute([FromBody] Route value)
         {
-            const string insertString = "insert into customer (email, firstname, lastname, addressid, alarmid, routeid, admin) values (@email, @firstname, @lastname, @addressid, @alarmid, @routeid, @admin)";
+            const string insertString = "insert into route (addressiddeparture, addressidarrival) values (@addressiddeparture, @addressidarrival)";
             using (SqlConnection databaseConnection = new SqlConnection(ConnectionString))
             {
                 databaseConnection.Open();
                 using (SqlCommand insertCommand = new SqlCommand(insertString, databaseConnection))
                 {
-                    insertCommand.Parameters.AddWithValue("@email", value.Email);
-                    insertCommand.Parameters.AddWithValue("@firstname", value.FirstName);
-                    insertCommand.Parameters.AddWithValue("@lastname", value.LastName);
-                    insertCommand.Parameters.AddWithValue("@addressid", value.AddressId);
-                    insertCommand.Parameters.AddWithValue("@alarmid", value.AlarmId);
-                    insertCommand.Parameters.AddWithValue("@routeid", value.RouteId);
-                    insertCommand.Parameters.AddWithValue("@admin", value.Adminstartor);
+                    insertCommand.Parameters.AddWithValue("@addressiddeparture", value.AddressIdDeparture);
+                    insertCommand.Parameters.AddWithValue("@addressiddeparture", value.AddressIdArrival);
                     int rowsAffected = insertCommand.ExecuteNonQuery();
                     return rowsAffected;
                 }
             }
         }
 
-        // PUT: api/Customer/5
+        // PUT: api/Route/5
         [HttpPut("{id}")]
-        public int UpdateCustomer(int id, [FromBody] Customer value)
+        public int UpdateRoute(int id, [FromBody] Route value)
         {
             const string updateString =
-                "update customer set email=@email, firstname=@firstname, lastname=@lastname, addressid=@addressid, alarmid=@alarmid routeid=@routeid, admin=@admin where id=@id;";
+                "update route set addressiddeparture=@addressiddeparture, addressidarrival=@addressidarrival;";
             using (SqlConnection databaseConnection = new SqlConnection(ConnectionString))
             {
                 databaseConnection.Open();
                 using (SqlCommand updateCommand = new SqlCommand(updateString, databaseConnection))
                 {
-                    updateCommand.Parameters.AddWithValue("@email", value.Email);
-                    updateCommand.Parameters.AddWithValue("@firstname", value.FirstName);
-                    updateCommand.Parameters.AddWithValue("@lastname", value.LastName);
-                    updateCommand.Parameters.AddWithValue("@addressid", value.AddressId);
-                    updateCommand.Parameters.AddWithValue("@alarmid", value.AlarmId);
-                    updateCommand.Parameters.AddWithValue("@routeid", value.RouteId);
-                    updateCommand.Parameters.AddWithValue("@admin", value.Adminstartor);
+                    updateCommand.Parameters.AddWithValue("@email", value.AddressIdDeparture);
+                    updateCommand.Parameters.AddWithValue("@firstname", value.AddressIdArrival);
                     int rowsAffected = updateCommand.ExecuteNonQuery();
                     return rowsAffected;
                 }
@@ -134,9 +115,9 @@ namespace TrafficWatchRest.Controllers
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public int DeleteCustomer(int id)
+        public int DeleteRoute(int id)
         {
-            const string deleteStatement = "delete from customer where id=@id";
+            const string deleteStatement = "delete from route where id=@id";
             using (SqlConnection databaseConnection = new SqlConnection(ConnectionString))
             {
                 databaseConnection.Open();
