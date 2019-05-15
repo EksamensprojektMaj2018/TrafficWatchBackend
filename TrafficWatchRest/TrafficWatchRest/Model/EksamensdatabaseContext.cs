@@ -91,7 +91,7 @@ namespace TrafficWatchRest.Model
 
                 entity.Property(e => e.AddressId).HasColumnName("address_id");
 
-                entity.Property(e => e.Adminstartor).HasColumnName("adminstartor");
+                entity.Property(e => e.Administrator).HasColumnName("administrator");
 
                 entity.Property(e => e.AlarmId).HasColumnName("alarm_id");
 

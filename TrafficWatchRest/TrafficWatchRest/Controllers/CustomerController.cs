@@ -35,7 +35,7 @@ namespace TrafficWatchRest.Controllers
                 AddressId = addressid,
                 AlarmId = alarmid,
                 RouteId = routeid,
-                Adminstartor = admin
+                Administrator = admin
             };
             return customer;
         }
@@ -101,7 +101,7 @@ namespace TrafficWatchRest.Controllers
                     insertCommand.Parameters.AddWithValue("@addressid", value.AddressId);
                     insertCommand.Parameters.AddWithValue("@alarmid", value.AlarmId);
                     insertCommand.Parameters.AddWithValue("@routeid", value.RouteId);
-                    insertCommand.Parameters.AddWithValue("@admin", value.Adminstartor);
+                    insertCommand.Parameters.AddWithValue("@admin", value.Administrator);
                     int rowsAffected = insertCommand.ExecuteNonQuery();
                     return rowsAffected;
                 }
@@ -125,7 +125,7 @@ namespace TrafficWatchRest.Controllers
                     updateCommand.Parameters.AddWithValue("@addressid", value.AddressId);
                     updateCommand.Parameters.AddWithValue("@alarmid", value.AlarmId);
                     updateCommand.Parameters.AddWithValue("@routeid", value.RouteId);
-                    updateCommand.Parameters.AddWithValue("@admin", value.Adminstartor);
+                    updateCommand.Parameters.AddWithValue("@admin", value.Administrator);
                     int rowsAffected = updateCommand.ExecuteNonQuery();
                     return rowsAffected;
                 }
