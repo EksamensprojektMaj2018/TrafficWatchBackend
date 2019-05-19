@@ -45,13 +45,25 @@ namespace UnitTest
         }
 
         [TestMethod]
-        public void TestCustomerAddCustomer() //Tester på vores "AddCustomer" metode
+        public void TestCustomerAdd() //Tester på vores "AddCustomer" metode
         {
             CustomerController cc = new CustomerController();
             IEnumerable<Customer> customerList = cc.GetAllCustomers();
             int preCount = customerList.Count();
             cc.AddCustomer(new Customer());
             Assert.AreEqual(preCount+1, customerList.Count());
+        }
+
+        [TestMethod]
+        public void TestCustomerDelete() //Tester på vores "DeleteCustomer" metode
+        {
+            CustomerController cc = new CustomerController();
+            IEnumerable<Customer> customerList = cc.GetAllCustomers();
+            int preCount = customerList.Count();
+
+            cc.DeleteCustomer(6);
+            Assert.AreEqual(preCount-1, customerList.Count());
+
         }
     }
 }
