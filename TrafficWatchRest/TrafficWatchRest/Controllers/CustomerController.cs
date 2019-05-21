@@ -84,6 +84,26 @@ namespace TrafficWatchRest.Controllers
                 }
             }
         }
+        // GET: api/Customer/5
+        [Route("{id}")]
+        public Customer GetCustomerByGoogleId(int googleId)
+        {
+            const string selectString = "select * from customer where id=@id";
+            using (SqlConnection databaseConnection = new SqlConnection(ConnectionString))
+            {
+                databaseConnection.Open();
+                using (SqlCommand selectCommand = new SqlCommand(selectString, databaseConnection))
+                {
+                    selectCommand.Parameters.AddWithValue("@googleid", googleId);
+                    using (SqlDataReader reader = selectCommand.ExecuteReader())
+                    {
+                        if (!reader.HasRows) { return null; }
+                        reader.Read(); // advance cursor to first row
+                        return ReadCustomer(reader);
+                    }
+                }
+            }
+        }
 
         // POST: api/Customer
         [HttpPost]
