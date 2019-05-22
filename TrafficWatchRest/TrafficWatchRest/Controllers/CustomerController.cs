@@ -46,7 +46,7 @@ namespace TrafficWatchRest.Controllers
         [HttpGet]
         public IEnumerable<Customer> GetAllCustomers()
         {
-            const string selectString = "select id, google_id, email, firstName, lastName, address_id, alarm_id, route_id, adminstartor from customer order by id";
+            const string selectString = "select id, google_id, email, first_name, last_name, address_id, alarm_id, route_id, administrator from Customer order by id";
             using (SqlConnection databaseConnection = new SqlConnection(ConnectionString))
             {
                 databaseConnection.Open();
@@ -90,7 +90,7 @@ namespace TrafficWatchRest.Controllers
         [Route("{googleId}")]
         public Customer GetCustomerByGoogleId(string googleId)
         {
-            const string selectString = "select * from customer where google_id=@googleid";
+            const string selectString = "select * from Customer where google_id=@googleid";
             using (SqlConnection databaseConnection = new SqlConnection(ConnectionString))
             {
                 databaseConnection.Open();
@@ -111,7 +111,7 @@ namespace TrafficWatchRest.Controllers
         [HttpPost]
         public int AddCustomer([FromBody] Customer value)
         {
-            const string insertString = "insert into customer (googleId, email, firstName, lastName, address_id, alarm_id, route_id, adminstartor) values (@googleid, @email, @firstname, @lastname, @addressid, @alarmid, @routeid, @admin)";
+            const string insertString = "insert into Customer (google_id, email, first_name, last_name, address_id, alarm_id, route_id, administrator) values (@googleid, @email, @firstname, @lastname, @addressid, @alarmid, @routeid, @admin)";
             using (SqlConnection databaseConnection = new SqlConnection(ConnectionString))
             {
                 databaseConnection.Open();

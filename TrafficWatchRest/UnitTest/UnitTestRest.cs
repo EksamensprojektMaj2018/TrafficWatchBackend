@@ -26,8 +26,8 @@ namespace UnitTest
         public void TestCustomerGetById() //Tester efter om navnet stemmer overens med det valgte ID fra databasen 
         {
             CustomerController cc = new CustomerController();
-            Customer customer1 = cc.GetCustomerById(6);
-            Assert.AreEqual(customer1.FirstName, "Marcel");
+            Customer customer1 = cc.GetCustomerByGoogleId("12234");
+            Assert.AreEqual(customer1.FirstName, "liæl");
 
            //Customer customer2 = cc.GetCustomerById(6); 
            // Assert.AreEqual(customer2.FirstName, "Mrcel");
@@ -37,7 +37,7 @@ namespace UnitTest
         public void TestCustomerGetByIdIsNull() //Tester efter på vores "CustomerGetById" og om det kan være null
         {
             CustomerController cc = new CustomerController();
-            Customer customer1 = cc.GetCustomerById(18); 
+            Customer customer1 = cc.GetCustomerByGoogleId("dnlk"); 
             Assert.IsNull(customer1);
 
            // Customer customer2 = cc.GetCustomerById(6);
