@@ -7,7 +7,6 @@ namespace TrafficWatchRest.Model
     {
         public Address()
         {
-            AddressCustomer = new HashSet<AddressCustomer>();
             RouteAddressIdArrivalNavigation = new HashSet<Route>();
             RouteAddressIdDepartureNavigation = new HashSet<Route>();
         }
@@ -18,7 +17,6 @@ namespace TrafficWatchRest.Model
         public string Road { get; set; }
         public int? HouseNr { get; set; }
 
-        public virtual ICollection<AddressCustomer> AddressCustomer { get; set; }
         public virtual ICollection<Route> RouteAddressIdArrivalNavigation { get; set; }
         public virtual ICollection<Route> RouteAddressIdDepartureNavigation { get; set; }
     }
