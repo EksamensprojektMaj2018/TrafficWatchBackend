@@ -1,4 +1,4 @@
-CREATE TABLE Customer (id INT NOT NULL IDENTITY(1,1), email NVCHAR(50) NOT NULL, first_name NVCHAR(50) NOT NULL, last_name NVCHAR(50) NOT NULL,
+CREATE TABLE Customer (id INT NOT NULL IDENTITY(1,1), google_id NVARCHAR(MAX) NOT NULL, email NVCHAR(50) NOT NULL, first_name NVCHAR(50) NOT NULL, last_name NVCHAR(50) NOT NULL,
 address_id INT, route_id INT, alarm_id INT, administrator BIT,
 CONSTRAINT FK_customer_address_id FOREIGN KEY (address_id) REFERENCES Address(id))
 CONSTRAINT FK_route_id FOREIGN KEY (route_id) REFERENCES Route(id)) 
