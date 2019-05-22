@@ -1,0 +1,14 @@
+CREATE TABLE Customer (id INT NOT NULL IDENTITY(1,1), email NVCHAR(50) NOT NULL, first_name NVCHAR(50) NOT NULL, last_name NVCHAR(50) NOT NULL,
+address_id INT, route_id INT, alarm_id INT, administrator BIT,
+CONSTRAINT FK_customer_address_id FOREIGN KEY (address_id) REFERENCES Address(id))
+CONSTRAINT FK_route_id FOREIGN KEY (route_id) REFERENCES Route(id)) 
+CONSTRAINT FK_alarm_id FOREIGN KEY (alarm_id) REFERENCES Alarm(id)), PRIMARY KEY (id)
+
+CREATE TABLE Address (id INT NOT NULL IDENTITY(1,1), zip_code INT, city NVCHAR(50), road NVCHAR(50), house_nr INT, customer_id INT NOT NULL,
+CONSTRAINT FK_customer_address FOREIGN KEY (customer_id) REFERENCES Customer(id)), PRIMARY KEY (id)
+
+CREATE TABLE Alarm (id INT NOT NULL IDENTITY(1,1), wake_up DATETIME NOT NULL, delay INT, customer_id INT NOT NULL, 
+CONSTRAINT FK_customer_alarm FOREIGN KEY (customer_id) REFERENCES Customer(id)), PRIMARY KEY (id) 
+
+CREATE TABLE Route (id INT NOT NULL IDENTITY(1,1), address_id_departure INT, address_id_arrival INT, customer_id INT NOT NULL, 
+CONSTRAINT FK_customer_route FOREIGN KEY (customer_id) REFERENCES Customer(id)), PRIMARY KEY (id)

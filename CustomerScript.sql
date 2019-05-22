@@ -1,4 +1,4 @@
-CREATE TABLE Customer ( id INT NOT NULL IDENTITY(1,1), email NVARCHAR NOT NULL, 
+CREATE TABLE Customer ( id INT NOT NULL IDENTITY(1,1), google_id INT NOT NULL, email NVARCHAR NOT NULL, 
 firstName NVARCHAR NOT NULL, lastName NVARCHAR NOT NULL, address_id INT, 
 alarm_id INT, route_id INT, adminstartor BIT NOT NULL, PRIMARY KEY (id))
 
