@@ -19,16 +19,18 @@ namespace TrafficWatchRest.Controllers
         private static Customer ReadCustomer(IDataRecord reader)
         {
             int id = reader.GetInt32(0);
-            string email = reader.GetString(1);
-            string firstname = reader.GetString(2);
-            string lastname = reader.GetString(3);
-            int addressid = reader.GetInt32(4);
-            int alarmid = reader.GetInt32(5);
-            int routeid = reader.GetInt32(6);
-            bool admin = reader.GetBoolean(7);
+            string googleid = reader.GetString(1);
+            string email = reader.GetString(2);
+            string firstname = reader.GetString(3);
+            string lastname = reader.GetString(4);
+            int? addressid = reader.IsDBNull(5) ? 0: reader.GetInt32(5);
+            int alarmid = reader.IsDBNull(6) ? 0 : reader.GetInt32(6);
+            int routeid = reader.IsDBNull(7) ? 0 : reader.GetInt32(7);
+            bool admin = reader.GetBoolean(8);
             Customer customer = new Customer
             {
                 Id = id,
+                GoogleId = googleid,
                 Email = email,
                 FirstName = firstname,
                 LastName = lastname,
@@ -44,7 +46,7 @@ namespace TrafficWatchRest.Controllers
         [HttpGet]
         public IEnumerable<Customer> GetAllCustomers()
         {
-            const string selectString = "select * from customer order by id";
+            const string selectString = "select id, google_id, email, firstName, lastName, address_id, alarm_id, route_id, adminstartor from customer order by id";
             using (SqlConnection databaseConnection = new SqlConnection(ConnectionString))
             {
                 databaseConnection.Open();
@@ -65,30 +67,30 @@ namespace TrafficWatchRest.Controllers
         }
 
         // GET: api/Customer/5
-        [Route("{id}")]
-        public Customer GetCustomerById(int id)
-        {
-            const string selectString = "select * from customer where id=@id";
-            using (SqlConnection databaseConnection = new SqlConnection(ConnectionString))
-            {
-                databaseConnection.Open();
-                using (SqlCommand selectCommand = new SqlCommand(selectString, databaseConnection))
-                {
-                    selectCommand.Parameters.AddWithValue("@id", id);
-                    using (SqlDataReader reader = selectCommand.ExecuteReader())
-                    {
-                        if (!reader.HasRows) { return null; }
-                        reader.Read(); // advance cursor to first row
-                        return ReadCustomer(reader);
-                    }
-                }
-            }
-        }
+        //[Route("{id}")]
+        //public Customer GetCustomerById(int id)
+        //{
+        //    const string selectString = "select * from customer where id=@id";
+        //    using (SqlConnection databaseConnection = new SqlConnection(ConnectionString))
+        //    {
+        //        databaseConnection.Open();
+        //        using (SqlCommand selectCommand = new SqlCommand(selectString, databaseConnection))
+        //        {
+        //            selectCommand.Parameters.AddWithValue("@id", id);
+        //            using (SqlDataReader reader = selectCommand.ExecuteReader())
+        //            {
+        //                if (!reader.HasRows) { return null; }
+        //                reader.Read(); // advance cursor to first row
+        //                return ReadCustomer(reader);
+        //            }
+        //        }
+        //    }
+        //}
         // GET: api/Customer/5
-        [Route("{id}")]
-        public Customer GetCustomerByGoogleId(int googleId)
+        [Route("{googleId}")]
+        public Customer GetCustomerByGoogleId(string googleId)
         {
-            const string selectString = "select * from customer where id=@id";
+            const string selectString = "select * from customer where google_id=@googleid";
             using (SqlConnection databaseConnection = new SqlConnection(ConnectionString))
             {
                 databaseConnection.Open();
@@ -109,12 +111,13 @@ namespace TrafficWatchRest.Controllers
         [HttpPost]
         public int AddCustomer([FromBody] Customer value)
         {
-            const string insertString = "insert into customer (email, firstname, lastname, addressid, alarmid, routeid, admin) values (@email, @firstname, @lastname, @addressid, @alarmid, @routeid, @admin)";
+            const string insertString = "insert into customer (googleId, email, firstName, lastName, address_id, alarm_id, route_id, adminstartor) values (@googleid, @email, @firstname, @lastname, @addressid, @alarmid, @routeid, @admin)";
             using (SqlConnection databaseConnection = new SqlConnection(ConnectionString))
             {
                 databaseConnection.Open();
                 using (SqlCommand insertCommand = new SqlCommand(insertString, databaseConnection))
                 {
+                    insertCommand.Parameters.AddWithValue("@googleid", value.GoogleId);
                     insertCommand.Parameters.AddWithValue("@email", value.Email);
                     insertCommand.Parameters.AddWithValue("@firstname", value.FirstName);
                     insertCommand.Parameters.AddWithValue("@lastname", value.LastName);
