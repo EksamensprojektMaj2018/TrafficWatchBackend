@@ -14,6 +14,9 @@ namespace TrafficWatchRest.Controllers
     [ApiController]
     public class CustomerController : ControllerBase
     {
+        /// <summary>
+        /// En privat readonly string, som indholder vores forbindelses information.
+        /// </summary>
         private static readonly string ConnectionString = Controllers.ConnectionString.GetConnectionString();
 
         private static Customer ReadCustomer(IDataRecord reader)
@@ -43,6 +46,9 @@ namespace TrafficWatchRest.Controllers
         }
 
         //GET: api/Customer
+        /// <summary>
+        /// En Get request, som spørg om alle "customers" får alle customers, hvor efter den så retunere den.
+        /// </summary>
         [HttpGet]
         public IEnumerable<Customer> GetAllCustomers()
         {
@@ -67,6 +73,9 @@ namespace TrafficWatchRest.Controllers
         }
 
         // GET: api/Customer/5
+        /// <summary>
+        /// En Get request som spørg efter en customer, baseret på dets id
+        /// </summary>
         [Route("{id}")]
         public Customer GetCustomerById(int id)
         {
@@ -87,7 +96,10 @@ namespace TrafficWatchRest.Controllers
             }
         }
         // GET: api/Customer/5
-        [Route("{googleId}")]
+        /// <summary>
+        /// En get request som spørg efter en cutomer, baseret på googleid 
+        /// </summary>
+        [Route("google/{googleId}")]
         public Customer GetCustomerByGoogleId(string googleId)
         {
             const string selectString = "select * from Customer where google_id=@googleid";
@@ -108,6 +120,9 @@ namespace TrafficWatchRest.Controllers
         }
 
         // POST: api/Customer
+        /// <summary>
+        /// En Post request, som indsætter en customer med de indsatte værdier
+        /// </summary>
         [HttpPost]
         public int InsertCustomer([FromBody] string googleId, string email, string firstName, string lastName, bool admin)
         {
@@ -129,6 +144,9 @@ namespace TrafficWatchRest.Controllers
         }
 
         // PUT: api/Customer/5
+        /// <summary>
+        /// En put request, som opdatere en customer med den valgte information
+        /// </summary>
         [HttpPut("{id}")]
         public int UpdateCustomer([FromBody]int id, string email, string firstName, string lastName, int addressId, int alarmId, int routeId )
         {
@@ -153,6 +171,9 @@ namespace TrafficWatchRest.Controllers
         }
 
         // DELETE: api/ApiWithActions/5
+        /// <summary>
+        /// En HTTP delete som slette en customer, baseret på dets id
+        /// </summary>
         [HttpDelete("{id}")]
         public int DeleteCustomer(int id)
         {
